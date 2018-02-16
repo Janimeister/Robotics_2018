@@ -1,6 +1,6 @@
 import serial
 import time
-
+import neural_network as nn
 def main():
     """
     connected = False
@@ -11,6 +11,6 @@ def main():
             ser.write(b'1')
     ser.close()
     """
-
+    nn.Qlearn_initialize()
     
 main()
