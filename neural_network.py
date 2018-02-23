@@ -3,6 +3,9 @@ from keras.layers import Dense
 from keras import losses
 import numpy as np
 import random
+import serial
+import time
+import robot.py as rpy
 
 def main():
     
@@ -108,12 +111,14 @@ def dummy_data():
     
     return dummy
 
-#Training data from sensors, communication needed between this and Arduino
+#Creating training data from sensors, communication with robot.py functions
 def data(sensor1, sensor2, sensor3, sensor4):
-    sensor1 = 1
-    sensor2 = 2
-    sensor3 = 3
-    sensor4 = 4
+
+    #Fetching sensor datas with robot.py's function
+    sensor1 = #Add function here
+    sensor2 = #Add function here
+    sensor3 = #Add function here
+    sensor4 = #Add function here
 
     state = [sensor1,
              sensor2,
@@ -125,3 +130,5 @@ def data(sensor1, sensor2, sensor3, sensor4):
 main()
 
 #reward also -1   0    1
+
+ 
