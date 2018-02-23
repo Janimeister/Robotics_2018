@@ -5,7 +5,7 @@ import numpy as np
 
 def main():
 
-    model = Sequantial()
+    model = Sequential()
     # Input layer
     model.add(Dense(units=4, activation='relu'))
     #Hidden layer
