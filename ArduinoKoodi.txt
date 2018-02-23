@@ -1,0 +1,17 @@
+#include <SoftwareSerial.h>
+char command;
+String string;
+SoftwareSerial BTdevice (10, 11); //RX TX
+
+void setup() {
+Serial.begin(9600);
+BTdevice.begin(9600);
+}
+
+void loop() {
+  if (BTdevice.available() > 0){
+    merkki = BTdevice.read();
+    Serial.println(merkki);
+    string = ""; 
+  }
+}
