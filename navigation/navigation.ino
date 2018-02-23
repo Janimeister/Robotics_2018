@@ -2,6 +2,7 @@
 #include <NewPing.h> //https://bitbucket.org/teckel12/arduino-new-ping/downloads/ NEEDED FOR UltraSonic sensors
 #include <Adafruit_MotorShield.h>
 #include "utility/Adafruit_MS_PWMServoDriver.h"
+#include <SoftwareSerial.h>
 
 //LEFT
 #define LFT_TRIGGER_PIN 2
@@ -13,7 +14,11 @@
 #define RGHT_TRIGGER_PIN 6
 #define RGHT_ECHO_PIN 7
 
-#define MAX_DISTANCE 600 //MAX DISTANCE FOR THE SENSORS
+#define MAX_DISTANCE 200 //MAX DISTANCE FOR THE SENSORS
+
+SoftwareSerial BTdevice(0,1);
+String string;
+char command;
 
 NewPing sonar_left(LFT_TRIGGER_PIN, LFT_ECHO_PIN, MAX_DISTANCE);
 NewPing sonar_front(FRNT_TRIGGER_PIN, FRNT_ECHO_PIN, MAX_DISTANCE);
@@ -28,11 +33,25 @@ void setup()
 {
   AFMS.begin();
   Serial.begin(9600);
+  BTdevice.begin(9600);
 }
 
 void loop()
 {
-  int luku = sonar_right.ping_cm();
+  if (BTdevice.available() > 0){
+    int test = BTdevice.read();
+    Serial.println(test);
+  }
+  delay(1000);
+  int luku = sonar_front.ping_cm();
+  int luku2 = sonar_left.ping_cm();
+  int luku3 = sonar_right.ping_cm();
+  //Serial.println("Front_sensor: Cm");
+  //Serial.print(luku);
+  //Serial.println("left_sensor: Cm");
+  //Serial.print(luku2);
+  //Serial.println("right_sensor: Cm");
+  //Serial.print(luku3);
   /*
   if (Serial.available() > 0)
   {
