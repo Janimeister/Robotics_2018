@@ -1,18 +1,18 @@
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, BatchNormalization, Input
 from keras import losses
 import numpy as np
 import random
-import serial
-import time
-import robot.py as rpy
+#import serial
+#import time
+#import robot.py as rpy
 
 def main():
-    
+
     #Initializing neural network
     model = nn_initialize()
     
-    #Training the neural network with dummy data
+    #Training the neural network with dummy data,
     for i in range(500):
         dummy_state = dummy_data()
         model = nn_train_dummy(model, dummy_state)
@@ -30,7 +30,7 @@ def nn_initialize():
     model.add(Dense(units=32, activation='sigmoid'))
     
     #Output layer
-    model.add(Dense(units=4, activation='sigmoid'))
+    model.add(Dense(units=4, activation='softmax'))
     
     #Compiling model
     model.compile(loss=losses.mean_squared_error, optimizer='RMSprop')
@@ -43,8 +43,10 @@ def nn_train_dummy(model, state):
     #Learningrate
     alpha = 0.001
     
-    #Highest prediction from nn_predict()
-    highest_prediction = nn_predict(model)
+    #Highest prediction from nn_predict(),
+    #THROWS ERROR: Sequential object has no attribute ndim
+    #Tried to format input data, but the problem has nothing to do with its dim it seems...
+    highest_prediction = nn_predict(model, state)
     
     #Gamma value, calculated from the highest prediction
     gamma = highest_prediction / 3
@@ -67,7 +69,7 @@ def nn_train_sensor(model, state):
     alpha = 0.001
     
     #Highest prediction from nn_predict()
-    highest_prediction = nn_predict(model)
+    highest_prediction = nn_predict(model, state)
     
     #Gamma value, calculated from the highest prediction
     gamma = highest_prediction / 3
@@ -87,7 +89,7 @@ def nn_train_sensor(model, state):
 def nn_predict(model, state):
     
     #Make new prediction
-    prediction = model.predict(state)
+    prediction = model.predict(model, state)
 
     #Defining the highest prediction
     highest_prediction = np.amax(prediction)
@@ -107,7 +109,15 @@ def nn_predict(model, state):
 
 #Creating dummy training data
 def dummy_data():
-    dummy = np.random.random_sample((4,0))
+
+    #Random floats between 0 and 1
+    dummy = np.random.random_sample((4, 0)) 
+    dummy = np.array(dummy)
+    print("Training data: " + str(dummy))
+
+    #Trying to solve problems with model.predicts by modifying form of input data
+    #dummy = Input(dummy(shape = (4, 0)))
+    #dummy = BatchNormalization(dummy)
     
     return dummy
 
@@ -115,10 +125,10 @@ def dummy_data():
 def data(sensor1, sensor2, sensor3, sensor4):
 
     #Fetching sensor datas with robot.py's function
-    sensor1 = #Add function here
-    sensor2 = #Add function here
-    sensor3 = #Add function here
-    sensor4 = #Add function here
+    #sensor1 = #Add function here
+    #sensor2 = #Add function here
+    #sensor3 = #Add function here
+    #sensor4 = #Add function here
 
     state = [sensor1,
              sensor2,
@@ -130,5 +140,3 @@ def data(sensor1, sensor2, sensor3, sensor4):
 main()
 
 #reward also -1   0    1
-
- 
