@@ -111,7 +111,7 @@ def nn_predict(model, state):
 def dummy_data():
 
     #Random floats between 0 and 1
-    dummy = np.random.random_sample((4, 0)) 
+    dummy = np.random.random_sample((4,)) 
     dummy = np.array(dummy)
     print("Training data: " + str(dummy))
 
