@@ -210,6 +210,12 @@ def data(sensor1, sensor2, sensor3):
     state = [sensor1,
              sensor2,
              sensor3]
+
+    #Function to scale the values from sensors to range between 0 and 1
+    for i in range(len(state)):
+        result = ((state[i]-0)/(200-0))
+        
+        
     
     #change states to 0-1, no higher values allowed due to sigmoid-fucntion
     return state
@@ -229,6 +235,7 @@ def reward(highest_prediction):
         reward = 1
         
     return reward
+
 
     
 
