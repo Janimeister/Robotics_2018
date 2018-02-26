@@ -1,12 +1,13 @@
 import serial
-import time
 
 def main():
-    try:
-        ser = serial.Serial("/dev/rfcomm0", 9600)
-        while 1:
-            ser.write("1".encode())
-    except:
-        print("Error connecting to serialport. Aborting...")
-    
+	data = 0
+	ser = serial.Serial("/dev/rfcomm0", 9600)
+	while True:
+		print("Reading from serial: ")
+		data = (ser.readline().strip())
+		data = data.decode("utf-8")
+		lista = data.split(',')
+		print(lista)
+
 main()
