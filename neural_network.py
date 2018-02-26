@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense, BatchNormalization, Input
+from keras.layers import Dense
 from keras import losses
 import numpy as np
 import random
@@ -21,23 +21,22 @@ def main():
 def nn_initialize():
 
     #Test input shape
-    dummy = dummy_data()
+    #dummy = dummy_data()
+    #print(dummy.ndim)
     
     #Defining model
     model = Sequential()
     
     # Input layer
-    model.add(Dense(units=4, input_shape=(dummy.shape), activation='sigmoid'))
+    model.add(Dense(units=4, input_shape=(1,), activation='sigmoid'))
     
     #Hidden layer
     model.add(Dense(units=32, activation='sigmoid'))
-    
     #Output layer
     model.add(Dense(units=4, activation='softmax'))
     
     #Compiling model
-    model.compile(loss=losses.mean_squared_error, optimizer='RMSprop')
-    
+    model.compile(loss=losses.categorical_crossentropy, optimizer='RMSprop')
     return model
 
 #Training with the dummy data, gets model and state as input, returns trained model
@@ -45,23 +44,24 @@ def nn_train_dummy(model, state):
 
     #Learningrate
     alpha = 0.001
-    
     #Highest prediction from nn_predict(),
     #THROWS ERROR: Sequential object has no attribute ndim
     #Tried to format input data, but the problem has nothing to do with its dim it seems...
-    highest_prediction = nn_predict(model, state)
-    
+    #highest_prediction = nn_predict(model, state)
+    prediction = nn_predict(model, state)
     #Gamma value, calculated from the highest prediction
-    gamma = highest_prediction / 3
 
     #Getting state from the data
-    state = dummy_data()
-    
+    #state = dummy_data()
+    highest_prediction = np.amax(prediction)
+    gamma = highest_prediction / 3
+    reward = 1
     #Calculating the Q-value
-    Qvalue = highest_prediction + alpha * (reward + gamma + nn_predict(model, state))
-
+    Qvalue = np.amax(prediction) + alpha * (reward + gamma + prediction)
+    Qvalue = np.array(Qvalue)
+    print(Qvalue.shape)
     #Train the model with one iteration and input (state)
-    model.fit(state, Qvalue, epochs=1, verbose=0)
+    model.fit(state, Qvalue, epochs=1, verbose=1)
 
     return model
 
@@ -79,7 +79,7 @@ def nn_train_sensor(model, state):
 
     #Getting state from the sensor data
     state = data(sensor1, sensor2, sensor3, sensor4)
-    
+
     #Calculating the Q-value
     Qvalue = highest_prediction + alpha * (reward + gamma + nn_predict(model, state))
 
@@ -92,10 +92,11 @@ def nn_train_sensor(model, state):
 def nn_predict(model, state):
     
     #Make new prediction
-    prediction = model.predict(model, state)
+    prediction = model.predict(state)
 
     #Defining the highest prediction
-    highest_prediction = np.amax(prediction)
+
+    #Palauta koko taulukko, vasta myöhemmin max
     
     #take highest value from prediction
     #calculate q value
@@ -108,13 +109,13 @@ def nn_predict(model, state):
     
     #rules over here!
     
-    return (highest_prediction)
+    return (prediction)
 
 #Creating dummy training data
 def dummy_data():
 
     #Random floats between 0 and 1
-    dummy = np.random.random_sample((4,)) 
+    dummy = np.random.rand(4,)
     dummy = np.array(dummy)
     print("Training data: " + str(dummy))
 
