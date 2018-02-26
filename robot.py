@@ -1,6 +1,5 @@
 import serial
 import time
-import neural_network as nn
 
 def main():
     try:
