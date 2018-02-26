@@ -16,9 +16,13 @@
 
 #define MAX_DISTANCE 200 //MAX DISTANCE FOR THE SENSORS
 
+
 SoftwareSerial BTdevice(0,1);
 String string;
 char command;
+
+//Sensor value list
+int sensorValue[3] = {0,0,0};
 
 NewPing sonar_left(LFT_TRIGGER_PIN, LFT_ECHO_PIN, MAX_DISTANCE);
 NewPing sonar_front(FRNT_TRIGGER_PIN, FRNT_ECHO_PIN, MAX_DISTANCE);
@@ -38,14 +42,56 @@ void setup()
 
 void loop()
 {
-  if (BTdevice.available() > 0){
-    int test = BTdevice.read();
-    Serial.println(test);
+
+  //int dF = distFront();
+  //int dR = distRight();
+  //int dL = distLeft();
+  
+  //read sensor values
+  readSensors();
+  
+  //BTdevice.write("BTDEVICE");
+
+  //send sensor values (list) to Rasp
+  for(int k=0; k<3; k++)
+  {
+    Serial.print(sensorValue[k]);
+    if(k<2){
+      Serial.print(',');
+    }
+
   }
-  delay(1000);
-  int luku = sonar_front.ping_cm();
-  int luku2 = sonar_left.ping_cm();
-  int luku3 = sonar_right.ping_cm();
+  Serial.println();
+  delay(2000);
+
+  //recieve message from Rasp (ATM if msg = 1 move forward
+  if (BTdevice.available() > 0){
+    int msg = BTdevice.read();
+    Serial.println(test);
+    if(msg == 49)
+    {
+      forward();
+      delay(1000);
+    }
+
+  }
+
+  //movement template
+  /*if(dF > 5 && dR > 5 && dL > 5)
+  {
+     forward();
+     delay(1000);
+  }
+  else
+  {
+    stopMotors();
+  }*/
+
+  //sonic sensor test
+  //delay(1000);
+  //int luku = sonar_front.ping_cm();
+  //int luku2 = sonar_left.ping_cm();
+  //int luku3 = sonar_right.ping_cm();
   //Serial.println("Front_sensor: Cm");
   //Serial.print(luku);
   //Serial.println("left_sensor: Cm");
@@ -72,6 +118,33 @@ void loop()
   }
   */
   
+}
+
+//SONAR SENSORS
+
+void readSensors()
+{
+  sensorValue[0] = distFront();
+  sensorValue[1] = distLeft();
+  sensorValue[2] = distRight();
+}
+
+int distFront()
+{
+  int dF = sonar_front.ping_cm();
+  return dF;
+}
+
+int distRight()
+{
+  int dR = sonar_right.ping_cm();
+  return dR;
+}
+
+int distLeft()
+{
+  int dL = sonar_left.ping_cm();
+  return dL;
 }
 
 //MOVEMENT OPTIONS
@@ -108,7 +181,7 @@ void right()
   leftMotor2 -> run(FORWARD);
 }
 
-void stop()
+void stopMotors()
 {
   rightMotor1 -> setSpeed(0);
   leftMotor2 -> setSpeed(0);
