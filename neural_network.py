@@ -24,7 +24,7 @@ def nn_initialize():
     model = Sequential()
     
     # Input layer
-    model.add(Dense(units=4, input_shape=(4,0), activation='sigmoid'))
+    model.add(Dense(units=4, input_shape=(4,), activation='sigmoid'))
     
     #Hidden layer
     model.add(Dense(units=32, activation='sigmoid'))
