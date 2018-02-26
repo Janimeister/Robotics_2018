@@ -44,16 +44,11 @@ def nn_train_dummy(model, state):
 
     #Learningrate
     alpha = 0.001
-    #Highest prediction from nn_predict(),
-    #THROWS ERROR: Sequential object has no attribute ndim
-    #Tried to format input data, but the problem has nothing to do with its dim it seems...
-    #highest_prediction = nn_predict(model, state)
+    #Prediction from nn_predict()
     prediction = nn_predict(model, state)
-    #Gamma value, calculated from the highest prediction
-
-    #Getting state from the data
-    #state = dummy_data()
+    
     highest_prediction = np.amax(prediction)
+    #Gamma value, calculated from the highest prediction
     gamma = highest_prediction / 3
     reward = 1
     #Calculating the Q-value
