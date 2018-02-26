@@ -143,24 +143,52 @@ def dummy_data():
 
 def dummy_generate(dummy, steps, i):
 
-    #STILL TO DO:
-    #ADD HANDLING IF VALUE WOULD GO LOWER THAN 0
-    #IF(DUMMY[X] < 0), THEN IF OPERAND -, SWITCH +
-
     #Generating increasing/decreasing values
 
     #Modifying inputs to increase/decrease for half amount of iterations
     if(i < steps/2 and i > 0 ):
-        dummy[0] += 0.1 
-        dummy[1] -= 0.1
-        dummy[2] += 0.1
+        
+        #Error handling, if value >= 1
+        if(dummy[0] + 0.1 >= 1):
+            dummy[0] = np.random.rand()
+        else:
+            dummy[0] += 0.1
+            
+        #Error handling, if value <= 0
+        if(dummy[1] - 0.1 <= 0):
+            dummy[1] = np.random.rand()
+        else:
+            dummy[1] -= 0.1
+
+        #Error handling, if value >= 1
+        if(dummy[2] + 0.1 >= 1):
+            dummy[2] = np.random.rand()
+        else:
+            dummy[2] += 0.1
+        
         print("Training data: " + str(dummy) + "Iteration: " + str(i))
 
     #Vice Versa
     if(i > steps/2 and i != steps):
-        dummy[0] -= 0.1 
-        dummy[1] += 0.1
-        dummy[2] -= 0.1
+        
+        #Error handling, if value <= 0
+        if(dummy[0] - 0.1 <= 0):
+            dummy[0] = np.random.rand()
+        else:
+            dummy[0] -= 0.1
+            
+        #Error handling, if value >= 1
+        if(dummy[1] + 0.1 >= 1):
+            dummy[1] = np.random.rand()
+        else:
+            dummy[1] += 0.1
+            
+        #Error handling, if value <= 0
+        if(dummy[2] - 0.1 <= 0):
+            dummy[2] = np.random.rand()
+        else:
+            dummy[2] -= 0.1
+            
         print("Training data: " + str(dummy) + "Iteration: " + str(i))
         
 
