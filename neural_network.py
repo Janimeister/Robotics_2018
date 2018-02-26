@@ -20,11 +20,14 @@ def main():
 #Initializing the neural network, its layer, activation functions and optimizer
 def nn_initialize():
 
+    #Test input shape
+    dummy = dummy_data()
+    
     #Defining model
     model = Sequential()
     
     # Input layer
-    model.add(Dense(units=4, input_shape=(4,), activation='sigmoid'))
+    model.add(Dense(units=4, input_shape=(dummy.shape), activation='sigmoid'))
     
     #Hidden layer
     model.add(Dense(units=32, activation='sigmoid'))
