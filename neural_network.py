@@ -46,6 +46,7 @@ def nn_initialize():
     
     #Compiling model
     model.compile(loss=losses.categorical_crossentropy, optimizer='RMSprop')
+    
     return model
 
 #Training with the dummy data, gets model and state as input, returns trained model
