@@ -3,6 +3,7 @@ from keras.layers import Dense
 from keras import losses
 import numpy as np
 import random
+import keras.backend as K
 #import serial
 #import time
 #import robot.py as rpy
@@ -13,7 +14,7 @@ def main():
     model = nn_initialize()
 
     #Steps
-    steps = 500
+    steps = 200
 
     #Making first dummy_data set
     dummy = dummy_data()
@@ -28,6 +29,8 @@ def main():
 
     #Training the neural nerwork with sensor data
         #Inser function here
+        
+    print("Model in the end of training: " + str(model))
 
 #Initializing the neural network, its layer, activation functions and optimizer
 def nn_initialize():
@@ -45,7 +48,7 @@ def nn_initialize():
     model.add(Dense(units=3, activation='softmax'))
     
     #Compiling model
-    model.compile(loss=losses.categorical_crossentropy, optimizer='RMSprop')
+    model.compile(loss=losses.binary_crossentropy, optimizer='RMSprop', metrics = ["accuracy"])
     
     return model
 
@@ -57,9 +60,15 @@ def nn_train_dummy(model, state, steps, i):
     
     #Prediction from nn_predict()
     prediction = nn_predict(model, state)
+    
+    #Test print
+    print("Prediction: " + str(prediction))
 
     #Calculating highest prediction for detecting highest value among inputs
     highest_prediction = np.amax(prediction)
+
+    #Test print
+    print("Highest: " + str(highest_prediction))
 
     #Taking new state
     state_new = dummy_generate(state, steps, i)
@@ -78,10 +87,14 @@ def nn_train_dummy(model, state, steps, i):
     Qvalue = np.array(Qvalue)
     
     #Test print
-    print(Qvalue.shape)
+    print("Qvalue: " + str(Qvalue))
     
     #Train the model with one iteration and input (state)
     model.fit(state, Qvalue, epochs=1, verbose=1)
+
+    #Test printing learning curve
+    #accuracy = model.evaluate(prediction, prediction_new)
+    #print("Accuracy: " + str(accuracy))
 
     return model
 
@@ -112,9 +125,6 @@ def nn_train_sensor(model, state):
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + prediction_new)
     Qvalue = np.array(Qvalue)
-    
-    #Test print
-    print(Qvalue.shape)
     
     #Train the model with one iteration and input (state)
     model.fit(state, Qvalue, epochs=1, verbose=1)
@@ -170,7 +180,7 @@ def dummy_generate(dummy, steps, i):
         else:
             dummy[2] += 0.1
         
-        print("Training data: " + str(dummy) + "Iteration: " + str(i))
+        print("Training data: " + str(dummy) + "\nIteration: " + str(i))
 
     #Vice Versa
     if(i > steps/2 and i != steps):
@@ -217,7 +227,7 @@ def data(sensor1, sensor2, sensor3):
         
         
     
-    #change states to 0-1, no higher values allowed due to sigmoid-fucntion
+    #Change states to 0-1, no higher values allowed due to sigmoid-fucntion
     return state
 
 #Calculating reward value by state, defined once every iteration
