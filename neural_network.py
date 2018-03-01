@@ -24,13 +24,11 @@ def main():
     
     #Training the neural network with dummy data,
     for i in range(steps):
-        dummy = dummy_generate(dummy, steps, i) #dummy_data()
+        dummy = dummy_generate(dummy, steps, i) #Dummy_data()
         model = nn_train_dummy(model, dummy, steps, i)
 
-    #Training the neural nerwork with sensor data
-        #Inser function here
+    return model
         
-    print("Model in the end of training: " + str(model))
 
 #Initializing the neural network, its layer, activation functions and optimizer
 def nn_initialize():
@@ -83,18 +81,18 @@ def nn_train_dummy(model, state, steps, i):
     reward_new = reward(highest_prediction)
     
     #Calculating the Q-value
-    Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + prediction)
+    Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
     Qvalue = np.array(Qvalue)
-    
-    #Test print
-    print("Qvalue: " + str(Qvalue))
-    
-    #Train the model with one iteration and input (state)
-    model.fit(state, Qvalue, epochs=1, verbose=1)
 
-    #Test printing learning curve
-    #accuracy = model.evaluate(prediction, prediction_new)
-    #print("Accuracy: " + str(accuracy))
+    #Getting index of highest prediction
+    i,j = np.unravel_index(prediction.argmax(), prediction.shape)
+    index = [i,j]
+    print("Index of highest prediction: " + str(index))
+    prediction[index] = Qvalue
+  
+    #Train the model with one iteration and input (state)
+    model.fit(state, prediction, epochs=1, verbose=1)
+
 
     return model
 
@@ -123,13 +121,22 @@ def nn_train_sensor(model, state):
     reward_new = reward(highest_prediction)
 
     #Calculating the Q-value
-    Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + prediction_new)
+    Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
     Qvalue = np.array(Qvalue)
+
+    #Getting index of highest prediction
+    i,j = np.unravel_index(prediction.argmax(), prediction.shape)
+    index = [i,j]
+    print("Index of highest prediction: " + str(index))
+    prediction[index] = Qvalue
     
     #Train the model with one iteration and input (state)
-    model.fit(state, Qvalue, epochs=1, verbose=1)
+    model.fit(state, prediction, epochs=1, verbose=1)
 
-    return model
+    #Defining action
+    action = action(highest_prediction)
+    
+    return model, action
 
 #Prediction making, gets model and state as input, returns highes prediction among the values
 def nn_predict(model, state):
@@ -210,23 +217,15 @@ def dummy_generate(dummy, steps, i):
     
 
 #Creating training data from sensors, communication with robot.py functions
-def data(sensor1, sensor2, sensor3):
+#Called in robot.py
+def data(sensor):
 
-    #Fetching sensor datas with robot.py's function
-    #sensor1 = #Add function here
-    #sensor2 = #Add function here
-    #sensor3 = #Add function here
-
-    state = [sensor1,
-             sensor2,
-             sensor3]
+    state = sensor
 
     #Function to scale the values from sensors to range between 0 and 1
     for i in range(len(state)):
         result = ((state[i]-0)/(200-0))
         
-        
-    
     #Change states to 0-1, no higher values allowed due to sigmoid-fucntion
     return state
 
@@ -246,6 +245,19 @@ def reward(highest_prediction):
         
     return reward
 
+def action(highest_prediction):
+    if(highest_prediction < 0.20):
+        action = 0
+    if(highest_prediction >= 0.20 and highest_prediction < 0.40):
+        action = 2
+    if(highest_prediction >= 0.40 and highest_prediction < 0.60):
+        action = random.randint(2, 4)
+    if(highest_prediction >= 0.60 and highest_prediction < 0.80):
+        action = 3
+    if(highest_prediction >= 0.80 and highest_prediction < 1):
+        action = 1
+        
+    return action
 
     
 
