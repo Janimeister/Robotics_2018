@@ -67,13 +67,35 @@ void loop()
   //recieve message from Rasp (ATM if msg = 1 move forward
   if (BTdevice.available() > 0){
     int msg = BTdevice.read();
-    Serial.println(test);
+    Serial.println(msg);
     if(msg == 49)
     {
       forward();
       delay(1000);
+      stopMotors();
     }
-
+    if(msg == 48)
+    {
+      backward();
+      delay(1000);
+      stopMotors();
+    }
+    if(msg == 50)
+    {
+      right();
+      delay(400);
+      forward();
+      delay(200);
+      stopMotors();
+    }
+    if(msg == 51)
+    {
+      left();
+      delay(400);
+      forward();
+      delay(200);
+      stopMotors();
+    }
   }
 
   //movement template
@@ -153,32 +175,32 @@ void forward()
 {
   rightMotor1 -> setSpeed(150);
   leftMotor2 -> setSpeed(150);
-  rightMotor1 -> run(FORWARD);
-  leftMotor2 -> run(FORWARD);
+  rightMotor1 -> run(BACKWARD);
+  leftMotor2 -> run(BACKWARD);
 }
 
 void backward()
 {
   rightMotor1 -> setSpeed(150);
   leftMotor2 -> setSpeed(150);
-  rightMotor1 -> run(BACKWARD);
-  leftMotor2 -> run(BACKWARD);
+  rightMotor1 -> run(FORWARD);
+  leftMotor2 -> run(FORWARD);
 }
 
 void left()
 {
-  rightMotor1 -> setSpeed(150);
-  leftMotor2 -> setSpeed(150);
-  rightMotor1 -> run(FORWARD);
-  leftMotor2 -> run(BACKWARD);
+  rightMotor1 -> setSpeed(80);
+  leftMotor2 -> setSpeed(80);
+  rightMotor1 -> run(BACKWARD);
+  leftMotor2 -> run(FORWARD);
 }
 
 void right()
 {
-  rightMotor1 -> setSpeed(150);
-  leftMotor2 -> setSpeed(150);
-  rightMotor1 -> run(BACKWARD);
-  leftMotor2 -> run(FORWARD);
+  rightMotor1 -> setSpeed(80);
+  leftMotor2 -> setSpeed(80);
+  rightMotor1 -> run(FORWARD);
+  leftMotor2 -> run(BACKWARD);
 }
 
 void stopMotors()
@@ -188,6 +210,3 @@ void stopMotors()
   rightMotor1 -> run(BRAKE);
   leftMotor2 -> run(BRAKE);
 }
-
-
-
