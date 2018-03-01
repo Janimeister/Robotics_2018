@@ -9,26 +9,7 @@ import keras.backend as K
 #import robot.py as rpy
 
 def main():
-
-    #Initializing neural network
-    model = nn_initialize()
-
-    #Steps
-    steps = 200
-
-    #Making first dummy_data set
-    dummy = dummy_data()
-
-    #Making first sensor data
-    #data = data(sensor1, sensor2, sensor3)
-    
-    #Training the neural network with dummy data,
-    for i in range(steps):
-        dummy = dummy_generate(dummy, steps, i) #Dummy_data()
-        model = nn_train_dummy(model, dummy, steps, i)
-
-    return model
-        
+    print("Start:")
 
 #Initializing the neural network, its layer, activation functions and optimizer
 def nn_initialize():
@@ -259,8 +240,24 @@ def action(highest_prediction):
         
     return action
 
+def initialize():
+    #Initializing neural network
+    model = nn_initialize()
+
+    #Steps
+    steps = 200
+
+    #Making first dummy_data set
+    dummy = dummy_data()
+
+    #Making first sensor data
+    #data = data(sensor1, sensor2, sensor3)
     
+    #Training the neural network with dummy data,
+    for i in range(steps):
+        dummy = dummy_generate(dummy, steps, i) #Dummy_data()
+        model = nn_train_dummy(model, dummy, steps, i)
 
+    return model
+    
 main()
-
-#reward also -1   0    1
