@@ -4,9 +4,6 @@ from keras import losses
 import numpy as np
 import random
 import keras.backend as K
-#import serial
-#import time
-#import robot.py as rpy
 
 def main():
     print("Start:")
