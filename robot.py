@@ -13,10 +13,9 @@ def main():
                 #Lisätään lista printtauksen lisäksi neuroverkolle
                 state = data(lista)
                 model, action = neural_network.nn_train_sensor(model, state)
+                action = str(action)
                 ser.write(action.encode())
 
             except:
                 print("Something was wrong with the data...")
-                var2 = input("Haluatko varmasti lopettaa?: ")
-                if var2 == "y": quit()
 main()
