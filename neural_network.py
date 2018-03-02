@@ -87,7 +87,7 @@ def nn_train_sensor(model, state):
     highest_prediction = nn_predict(model, state)
 
     #Taking new state
-    state_new = data(sensor1, sensor2, sensor3)
+    state_new = data(state)
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
