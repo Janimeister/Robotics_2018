@@ -9,13 +9,17 @@ def main():
             #try:
             bt_data = (ser.readline().strip())
             bt_data = bt_data.decode("utf-8")
-            lista = bt_data.split(',')
-            print("Read data is: ", lista)
+            
+            s_list = bt_data.split(',')
+            s_list = list(map(int, s_list))
+            
+            print("Read data is: ", s_list)
+            
             #Lisätään lista printtauksen lisäksi neuroverkolle
-            state = neural_network.data(lista)
+            
+            state = neural_network.data(s_list)
             model, action = neural_network.nn_train_sensor(model, state)
-            print("Action before converting: ", action)
-            action = str(action)
+
             print("Action is: " ,action)
             ser.write(action.encode())
 """
