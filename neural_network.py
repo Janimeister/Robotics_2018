@@ -84,7 +84,7 @@ def nn_train_sensor(model, state):
     prediction = nn_predict(model, state)
     
     #Highest prediction from nn_predict()
-    highest_prediction = nn_predict(model, state)
+    highest_prediction = np.amax(prediction)
 
     #Taking new state
     state_new = data(state)
