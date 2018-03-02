@@ -112,9 +112,9 @@ def nn_train_sensor(model, state):
     model.fit(state, prediction, epochs=1, verbose=1)
 
     #Defining action
-    action = action(highest_prediction)
+    actioni = action(highest_prediction)
     
-    return model, action
+    return model, actioni
 
 #Prediction making, gets model and state as input, returns highes prediction among the values
 def nn_predict(model, state):
