@@ -113,6 +113,13 @@ def nn_train_sensor(model, state):
     #Train the model with one iteration and input (state)
     model.fit(state, prediction, epochs=1, verbose=1)
 
+    #Prediction from nn_predict()
+    print("Prediction is: " + str(prediction_new))
+
+    #Highest prediction from nn_predict()
+    highest_prediction = np.amax(prediction_new)
+    print("Highest prediction: " + str(highest_prediction))
+
     #Defining action
     actioni = action(highest_prediction)
     
