@@ -18,9 +18,12 @@ def main():
             #Lisätään lista printtauksen lisäksi neuroverkolle
             
             state = neural_network.data(s_list)
+            time.sleep(0.5)
             model, action = neural_network.nn_train_sensor(model, state)
+            time.sleep(0.5)
             print("Action is: " ,action)
             ser.write(str(action).encode())
+            time.sleep(0.5)
 """
             except:
                 print("Something was wrong with the data...")
