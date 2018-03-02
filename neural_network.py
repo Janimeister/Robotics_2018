@@ -204,7 +204,7 @@ def data(sensor):
 
     #Function to scale the values from sensors to range between 0 and 1
     for i in range(len(state)):
-        result = ((state[i]-0)/(200-0))
+        result = ((state[i]-0)/(100-0))
         
     #Change states to 0-1, no higher values allowed due to sigmoid-fucntion
     return state
