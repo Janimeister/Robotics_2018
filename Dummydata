@@ -1,0 +1,30 @@
+##Python
+
+import numpy as np
+
+##Dummydata 
+#Prints all value pairs of sensors [x,y,z] so that value always raises or lowers one step
+#Current range is 0cm to 50cm
+
+#Here it is possible to change range of sensor. Down 50 to 0 and up there 1 to 51 
+jxx = list(np.arange(0,50))
+fxx = list(np.arange(1,51))
+jxx.reverse()
+
+#Build first array from x axis values and make it repeat  
+yhdxx =  np.concatenate((jxx, fxx), axis=0)
+yhdxx = np.tile(yhdxx, 16)
+
+#Build second array from z axis values and make it repeat  
+yhdzz =  np.concatenate((jxx, fxx), axis=0)
+yhdzz = np.repeat(yhdzz, 4)
+yhdzz = np.tile(yhdzz, 4)
+
+#Build third array from y axis values and make it repeat  
+yhdyy =  np.concatenate((jxx, fxx), axis=0)
+yhdyy = np.repeat(yhdyy, 16)
+
+#Combines different arrays x,y,z to one matrix
+xnztogether =  np.column_stack((yhdxx, yhdzz, yhdyy))
+
+print (xnztogether)
