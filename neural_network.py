@@ -32,7 +32,7 @@ def nn_initialize():
 def nn_train_dummy(model, state, steps, i):
 
     #Learningrate
-    alpha = 0.001
+    alpha = 0.2
     
     #Prediction from nn_predict()
     prediction = nn_predict(model, state)
@@ -78,7 +78,7 @@ def nn_train_dummy(model, state, steps, i):
 def nn_train_sensor(model, state):
 
     #Learningrate
-    alpha = 0.001
+    alpha = 0.2
 
     #Prediction from nn_predict()
     prediction = nn_predict(model, state)
@@ -212,15 +212,15 @@ def data(sensor):
 #Calculating reward value by state, defined once every iteration
 def reward(highest_prediction):
 
-    if(highest_prediction < 0.20):
+    if(highest_prediction < 0.10):
         reward = -1
-    if(highest_prediction >= 0.20 and highest_prediction < 0.40):
+    if(highest_prediction >= 0.10 and highest_prediction < 0.20):
         reward = -0.5
-    if(highest_prediction >= 0.40 and highest_prediction < 0.60):
+    if(highest_prediction >= 0.30 and highest_prediction < 0.40):
         reward = 0
-    if(highest_prediction >= 0.60 and highest_prediction < 0.80):
+    if(highest_prediction >= 0.40 and highest_prediction < 0.50):
         reward = 0.5
-    if(highest_prediction >= 0.80 and highest_prediction < 1):
+    if(highest_prediction >= 0.50 and highest_prediction < 1):
         reward = 1
         
     return reward
