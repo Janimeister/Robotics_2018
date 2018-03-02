@@ -19,9 +19,8 @@ def main():
             
             state = neural_network.data(s_list)
             model, action = neural_network.nn_train_sensor(model, state)
-
             print("Action is: " ,action)
-            ser.write(action.encode())
+            ser.write(str(action).encode())
 """
             except:
                 print("Something was wrong with the data...")
