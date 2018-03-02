@@ -1,5 +1,6 @@
 import serial
 import neural_network
+import time
 def main():
     model = neural_network.initialize()
     data = 0
