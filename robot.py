@@ -12,7 +12,7 @@ def main():
             lista = bt_data.split(',')
             print("Read data is: ", lista)
             #Lisätään lista printtauksen lisäksi neuroverkolle
-            state = data(lista)
+            state = neural_network.data(lista)
             model, action = neural_network.nn_train_sensor(model, state)
             print("Action before converting: ", action)
             action = str(action)
