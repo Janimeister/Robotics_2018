@@ -65,6 +65,7 @@ def nn_train_dummy(model, state, steps, i):
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
     #Qvalue = np.array(Qvalue)
+    print("Qvalue: " + str(Qvalue))
 
     #Getting index of highest prediction
     i,j = np.unravel_index(prediction_new.argmax(), prediction_new.shape)
@@ -73,7 +74,7 @@ def nn_train_dummy(model, state, steps, i):
     prediction_new[index] = Qvalue
   
     #Train the model with one iteration and input (state)
-    model.fit(state, np.amax(prediction_new), epochs=1, verbose=1)
+    model.fit(state, prediction_new, epochs=1, verbose=1)
 
     return model
 
@@ -113,6 +114,7 @@ def nn_train_sensor(model, state):
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
     #Qvalue = np.array(Qvalue)
+    print("Qvalue: " + str(Qvalue))
 
     #Getting index of highest prediction
     i,j = np.unravel_index(prediction_new.argmax(), prediction_new.shape)
@@ -121,7 +123,7 @@ def nn_train_sensor(model, state):
     prediction_new[index] = Qvalue
     
     #Train the model with one iteration and input (state)
-    model.fit(state, np.amax(prediction_new), epochs=1, verbose=1)
+    model.fit(state, prediction_new, epochs=1, verbose=1)
     
     return model, actioni
 
