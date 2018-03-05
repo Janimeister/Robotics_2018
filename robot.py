@@ -19,8 +19,18 @@ def main():
                 #Lisätään lista printtauksen lisäksi neuroverkolle
                 
                 state = neural_network.data(s_list)
-                time.sleep(0.5)
-                model, action = neural_network.nn_train_sensor(model, state)
+                time.sleep(1.5)
+                
+                
+                bt_data = (ser.readline().strip())
+                bt_data = bt_data.decode("utf-8")
+                
+                s_list = bt_data.split(',')
+                s_list = list(map(int, s_list))
+                
+                state_new = neural_network.data(s_list)
+                
+                model, action = neural_network.nn_train_sensor(model, state, state_new)
                 time.sleep(0.5)
                 print("Action is: " ,action)
                 ser.write(str(action).encode())
