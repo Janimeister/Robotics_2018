@@ -67,7 +67,7 @@ void loop()
   //recieve message from Rasp (ATM if msg = 1 move forward
   if (BTdevice.available() > 0){
     int msg = BTdevice.read();
-    Serial.println(msg);
+    //Serial.println(msg);
     if(msg == 49)
     {
       forward();
