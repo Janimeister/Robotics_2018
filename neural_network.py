@@ -21,7 +21,7 @@ def nn_initialize():
     model.add(Dense(units=32, activation='sigmoid'))
     
     #Output layer
-    model.add(Dense(units=3, activation='softmax'))
+    model.add(Dense(units=3, activation='sigmoid'))
     
     #Compiling model
     model.compile(loss=losses.binary_crossentropy, optimizer='RMSprop', metrics = ["accuracy"])
@@ -215,7 +215,7 @@ def data(sensor):
 
     #Function to scale the values from sensors to range between 0 and 1
     for i in range(len(state)):
-        result = ((state[i]-0)/(85-0))
+        result = ((state[i]-0)/(200-0))
         
     #Change states to 0-1, no higher values allowed due to sigmoid-fucntion
     return state
@@ -223,15 +223,15 @@ def data(sensor):
 #Calculating reward value by state, defined once every iteration
 def reward(highest_prediction):
 
-    if(highest_prediction < 0.10):
+    if(highest_prediction < 0.20):
         reward = -1
-    if(highest_prediction >= 0.10 and highest_prediction < 0.20):
+    if(highest_prediction >= 0.20 and highest_prediction < 0.40):
         reward = -0.5
-    if(highest_prediction >= 0.30 and highest_prediction < 0.40):
+    if(highest_prediction >= 0.40 and highest_prediction < 0.60):
         reward = 0
-    if(highest_prediction >= 0.40 and highest_prediction < 0.50):
+    if(highest_prediction >= 0.60 and highest_prediction < 0.80):
         reward = 0.5
-    if(highest_prediction >= 0.50 and highest_prediction < 1):
+    if(highest_prediction >= 0.80 and highest_prediction < 1):
         reward = 1
         
     return reward
