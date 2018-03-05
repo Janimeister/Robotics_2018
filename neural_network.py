@@ -72,6 +72,7 @@ def nn_train_dummy(model, state, steps, i):
     index = [i,j]
     print("Index of highest prediction: " + str(index))
     prediction_new[index] = Qvalue
+    print("PREDICTION WITH QVAL: " + str(prediction_new))
   
     #Train the model with one iteration and input (state)
     model.fit(state, prediction_new, epochs=1, verbose=1)
@@ -121,6 +122,7 @@ def nn_train_sensor(model, state):
     index = [i,j]
     print("Index of highest prediction: " + str(index))
     prediction_new[index] = Qvalue
+    print("PREDICTION WITH QVAL: " + str(prediction_new))
     
     #Train the model with one iteration and input (state)
     model.fit(state, prediction_new, epochs=1, verbose=1)
