@@ -21,7 +21,7 @@ def nn_initialize():
     model.add(Dense(units=32, activation='sigmoid'))
     
     #Output layer
-    model.add(Dense(units=3, activation='softmax'))
+    model.add(Dense(units=3, activation='sigmoid'))
     
     #Compiling model
     model.compile(loss=losses.binary_crossentropy, optimizer='RMSprop', metrics = ["accuracy"])
@@ -32,7 +32,7 @@ def nn_initialize():
 def nn_train_dummy(model, state, steps, i):
 
     #Learningrate
-    alpha = 0.001
+    alpha = 0.02
     
     #Prediction from nn_predict()
     prediction = nn_predict(model, state)
@@ -51,70 +51,83 @@ def nn_train_dummy(model, state, steps, i):
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
+
+    #Making new highest prediction for calculating reward based on action
+    highest_prediction_new = np.amax(prediction_new)
     
     #Gamma value, calculated from the highest prediction
-    gamma = highest_prediction / 3
+    #gamma = highest_prediction_new / 3
+    gamma = 0.04
 
     #Defining reward
-    reward_new = reward(highest_prediction)
+    reward_new = reward(highest_prediction_new)
     
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
-    Qvalue = np.array(Qvalue)
+    #Qvalue = np.array(Qvalue)
+    print("Qvalue: " + str(Qvalue))
 
     #Getting index of highest prediction
-    i,j = np.unravel_index(prediction.argmax(), prediction.shape)
+    i,j = np.unravel_index(prediction_new.argmax(), prediction_new.shape)
     index = [i,j]
     print("Index of highest prediction: " + str(index))
-    prediction[index] = Qvalue
+    prediction_new[index] = Qvalue
+    print("PREDICTION WITH QVAL: " + str(prediction_new))
   
     #Train the model with one iteration and input (state)
-    model.fit(state, prediction, epochs=1, verbose=1)
-
+    model.fit(state, prediction_new, epochs=1, verbose=1)
 
     return model
 
 #Training with the actual sensor data, gets model and state as input, returns trained model
-def nn_train_sensor(model, state):
+def nn_train_sensor(model, state, state_new):
 
     #Learningrate
-    alpha = 0.001
+    alpha = 0.02
 
     #Prediction from nn_predict()
     prediction = nn_predict(model, state)
+    print("Prediction is: " + str(prediction))
     
     #Highest prediction from nn_predict()
-    highest_prediction = nn_predict(model, state)
+    highest_prediction = np.amax(prediction)
+    print("Highest prediction: " + str(highest_prediction))
+
+    #Defining action
+    actioni = action(highest_prediction)
 
     #Taking new state
-    state_new = data(sensor1, sensor2, sensor3)
+    #state_new = data(state)
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
+
+    #Making new highest prediction for calculating reward based on action
+    highest_prediction_new = np.amax(prediction_new)
     
     #Gamma value, calculated from the highest prediction
-    gamma = highest_prediction / 3
+    #gamma = highest_prediction_new / 3
+    gamma = 0.04
 
     #Defining reward
-    reward_new = reward(highest_prediction)
+    reward_new = reward(highest_prediction_new)
 
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
-    Qvalue = np.array(Qvalue)
+    #Qvalue = np.array(Qvalue)
+    print("Qvalue: " + str(Qvalue))
 
     #Getting index of highest prediction
-    i,j = np.unravel_index(prediction.argmax(), prediction.shape)
+    i,j = np.unravel_index(prediction_new.argmax(), prediction_new.shape)
     index = [i,j]
     print("Index of highest prediction: " + str(index))
-    prediction[index] = Qvalue
+    prediction_new[index] = Qvalue
+    print("PREDICTION WITH QVAL: " + str(prediction_new))
     
     #Train the model with one iteration and input (state)
-    model.fit(state, prediction, epochs=1, verbose=1)
-
-    #Defining action
-    action = action(highest_prediction)
+    model.fit(state, prediction_new, epochs=1, verbose=1)
     
-    return model, action
+    return model, actioni
 
 #Prediction making, gets model and state as input, returns highes prediction among the values
 def nn_predict(model, state):
