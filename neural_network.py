@@ -80,7 +80,7 @@ def nn_train_dummy(model, state, steps, i):
     return model
 
 #Training with the actual sensor data, gets model and state as input, returns trained model
-def nn_train_sensor(model, state):
+def nn_train_sensor(model, state, state_new):
 
     #Learningrate
     alpha = 0.02
@@ -97,7 +97,7 @@ def nn_train_sensor(model, state):
     actioni = action(highest_prediction)
 
     #Taking new state
-    state_new = data(state)
+    #state_new = data(state)
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
