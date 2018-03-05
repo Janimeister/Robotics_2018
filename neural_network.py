@@ -21,7 +21,7 @@ def nn_initialize():
     model.add(Dense(units=32, activation='sigmoid'))
     
     #Output layer
-    model.add(Dense(units=3, activation='softmax'))
+    model.add(Dense(units=3, activation='sigmoid'))
     
     #Compiling model
     model.compile(loss=losses.binary_crossentropy, optimizer='RMSprop', metrics = ["accuracy"])
