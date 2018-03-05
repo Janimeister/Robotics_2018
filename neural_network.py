@@ -51,16 +51,19 @@ def nn_train_dummy(model, state, steps, i):
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
+
+    #Making new highest prediction for calculating reward based on action
+    highest_prediction_new = np.amax(prediction_new)
     
     #Gamma value, calculated from the highest prediction
-    gamma = highest_prediction / 3
+    gamma = highest_prediction_new / 3
 
     #Defining reward
-    reward_new = reward(highest_prediction)
+    reward_new = reward(highest_prediction_new)
     
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
-    Qvalue = np.array(Qvalue)
+    #Qvalue = np.array(Qvalue)
 
     #Getting index of highest prediction
     i,j = np.unravel_index(prediction.argmax(), prediction.shape)
@@ -70,7 +73,6 @@ def nn_train_dummy(model, state, steps, i):
   
     #Train the model with one iteration and input (state)
     model.fit(state, prediction, epochs=1, verbose=1)
-
 
     return model
 
@@ -88,21 +90,27 @@ def nn_train_sensor(model, state):
     highest_prediction = np.amax(prediction)
     print("Highest prediction: " + str(highest_prediction))
 
+    #Defining action
+    actioni = action(highest_prediction)
+
     #Taking new state
     state_new = data(state)
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
+
+    #Making new highest prediction for calculating reward based on action
+    highest_prediction_new = np.amax(prediction_new)
     
     #Gamma value, calculated from the highest prediction
-    gamma = highest_prediction / 3
+    gamma = highest_prediction_new / 3
 
     #Defining reward
-    reward_new = reward(highest_prediction)
+    reward_new = reward(highest_prediction_new)
 
     #Calculating the Q-value
     Qvalue = np.amax(prediction) + alpha * (reward_new + gamma + np.amax(prediction_new))
-    Qvalue = np.array(Qvalue)
+    #Qvalue = np.array(Qvalue)
 
     #Getting index of highest prediction
     i,j = np.unravel_index(prediction.argmax(), prediction.shape)
@@ -112,9 +120,6 @@ def nn_train_sensor(model, state):
     
     #Train the model with one iteration and input (state)
     model.fit(state, prediction, epochs=1, verbose=1)
-
-    #Defining action
-    actioni = action(highest_prediction)
     
     return model, actioni
 
