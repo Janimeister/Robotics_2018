@@ -14,7 +14,7 @@ def nn_initialize():
     #Defining model
     model = Sequential()
     
-    # Input layer
+    #Input layer
     model.add(Dense(units=3, input_shape=(1,), activation='sigmoid'))
     
     #Hidden layer
@@ -56,7 +56,6 @@ def nn_train_dummy(model, state, steps, i):
     highest_prediction_new = np.amax(prediction_new)
     
     #Gamma value, calculated from the highest prediction
-    #gamma = highest_prediction_new / 3
     gamma = 0.04
 
     #Defining reward
@@ -97,7 +96,7 @@ def nn_train_sensor(model, state, state_new):
     actioni = action(highest_prediction)
 
     #Taking new state
-    #state_new = data(state)
+    state_new = data(state)
 
     #Making new prediction for calculating new Qvalue
     prediction_new = nn_predict(model, state_new)
@@ -106,7 +105,6 @@ def nn_train_sensor(model, state, state_new):
     highest_prediction_new = np.amax(prediction_new)
     
     #Gamma value, calculated from the highest prediction
-    #gamma = highest_prediction_new / 3
     gamma = 0.04
 
     #Defining reward
@@ -134,12 +132,6 @@ def nn_predict(model, state):
     
     #Make new prediction
     prediction = model.predict(state)
-
-    #take prediction with previous state, calculate reward
-
-    #take action, return only it. put above to train. nn_predict only for saving previous values.
-    
-    #rules over here!
     
     return (prediction)
 
@@ -259,9 +251,6 @@ def initialize():
 
     #Making first dummy_data set
     dummy = dummy_data()
-
-    #Making first sensor data
-    #data = data(sensor1, sensor2, sensor3)
     
     #Training the neural network with dummy data,
     for i in range(steps):
