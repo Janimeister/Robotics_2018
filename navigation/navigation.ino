@@ -97,48 +97,6 @@ void loop()
       stopMotors();
     }
   }
-
-  //movement template
-  /*if(dF > 5 && dR > 5 && dL > 5)
-  {
-     forward();
-     delay(1000);
-  }
-  else
-  {
-    stopMotors();
-  }*/
-
-  //sonic sensor test
-  //delay(1000);
-  //int luku = sonar_front.ping_cm();
-  //int luku2 = sonar_left.ping_cm();
-  //int luku3 = sonar_right.ping_cm();
-  //Serial.println("Front_sensor: Cm");
-  //Serial.print(luku);
-  //Serial.println("left_sensor: Cm");
-  //Serial.print(luku2);
-  //Serial.println("right_sensor: Cm");
-  //Serial.print(luku3);
-  /*
-  if (Serial.available() > 0)
-  {
-    if (Serial.read() == '1')
-    {
-        rightMotor1 ->setSpeed(150);
-        leftMotor2 ->setSpeed(150);
-        rightMotor1 ->run(FORWARD);
-        leftMotor2 ->run(FORWARD);
-    }
-    if (Serial.read() == '0')
-    {
-        rightMotor1 ->setSpeed(0);
-        leftMotor2 ->setSpeed(0);
-        rightMotor1 ->run(BRAKE);
-        leftMotor2 ->run(BRAKE);
-    }
-  }
-  */
   
 }
 
